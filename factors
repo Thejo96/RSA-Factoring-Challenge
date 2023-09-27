@@ -1,33 +1,25 @@
-#include "factor.h"
+def factor_rsa(n):
+    p = 1
+    q = 1
 
-/**
- * main - main function
- *
- *
- * Return: void
- */
-int main(int argc, char *argv[])
-{
-	FILE *fptr;
-	size_t count;
-	ssize_t line;
-	char *buffer = NULL;
+    # Find the smallest prime factors first
+    for i in range(2, int(n**0.5) + 1):
+        while n % i == 0:
+            if p == 1:
+                p = i
+            else:
+                q = i
+            n //= i
 
+    # If n is still greater than 1, it's the other prime factor
+    if n > 1:
+        if p == 1:
+            p = n
+        else:
+            q = n
 
-	if (argc != 2)
-	{
-		fprintf(stderr, "Usage: factor <filename>\n");
-		exit(EXIT_FAILURE);
-	}
-	fptr = fopen(argv[1], "r");
-	if (fptr == NULL)
-	{
-		fprintf(stderr, "Error: can't open file %s\n", argv[1]);
-		exit(EXIT_FAILURE);
-	}
-	while((line = getline(&buffer, &count, fptr)) != -1)
-	{
-		factorize(buffer);
-	}
-return (0);
-}
+    return p, q
+
+n = 2497885147362973  # Example RSA number
+p, q = factor_rsa(n)
+print(f"{n} = {p}*{q}")
